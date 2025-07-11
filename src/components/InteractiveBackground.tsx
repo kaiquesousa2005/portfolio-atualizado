@@ -1,9 +1,7 @@
 "use client"
 
-import { useCallback, useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import Particles from "@tsparticles/react"
-import { loadSlim } from "@tsparticles/slim"
-import type { Engine } from "@tsparticles/engine"
 
 // Componente para o grid de código que só renderiza no cliente
 function CodeGrid() {
@@ -38,10 +36,6 @@ function CodeGrid() {
 }
 
 export default function InteractiveBackground() {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine)
-  }, [])
-
   return (
     <div className="fixed inset-0 z-0">
       <Particles
