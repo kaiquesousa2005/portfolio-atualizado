@@ -37,9 +37,10 @@ function CodeGrid() {
 
 export default function InteractiveBackground() {
   return (
-    <div className="fixed inset-0 z-0">
+    <div className="fixed inset-0 -z-10 pointer-events-none">
       <Particles
         id="tsparticles"
+        className="pointer-events-auto"
         options={{
           background: {
             color: {
