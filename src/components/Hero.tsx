@@ -1,5 +1,6 @@
 "use client"
 
+import type React from "react"
 import { Suspense, useRef, useMemo } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, Sphere, Float, Text, MeshDistortMaterial, Sparkles } from "@react-three/drei"
@@ -7,8 +8,15 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import type * as THREE from "three"
 
-// Componente de partículas flutuantes customizadas
-function FloatingGeometry({ position, geometry, color, speed = 1 }: any) {
+// ✅ SOLUÇÃO 1: Definir interface correta
+interface FloatingGeometryProps {
+  position: [number, number, number]
+  geometry: React.ReactElement
+  color: string
+  speed?: number
+}
+
+function FloatingGeometry({ position, geometry, color, speed = 1 }: FloatingGeometryProps) {
   const meshRef = useRef<THREE.Mesh>(null)
 
   useFrame((state) => {
@@ -29,8 +37,13 @@ function FloatingGeometry({ position, geometry, color, speed = 1 }: any) {
   )
 }
 
-// Componente de anel de energia
-function EnergyRing({ radius = 3, color = "#00d4ff" }) {
+// ✅ Interface para EnergyRing
+interface EnergyRingProps {
+  radius?: number
+  color?: string
+}
+
+function EnergyRing({ radius = 3, color = "#00d4ff" }: EnergyRingProps) {
   const ringRef = useRef<THREE.Mesh>(null)
 
   useFrame((state) => {
@@ -48,7 +61,6 @@ function EnergyRing({ radius = 3, color = "#00d4ff" }) {
   )
 }
 
-// Esfera central com distorção
 function CentralSphere() {
   const sphereRef = useRef<THREE.Mesh>(null)
 
@@ -75,7 +87,6 @@ function CentralSphere() {
   )
 }
 
-// Texto 3D flutuante
 function FloatingText() {
   return (
     <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.3}>
@@ -85,15 +96,14 @@ function FloatingText() {
         color="#00d4ff"
         anchorX="center"
         anchorY="middle"
-      >
-        Desenvolvedor
+              >
+        FULL STACK
         <meshStandardMaterial emissive="#00d4ff" emissiveIntensity={0.3} metalness={0.7} roughness={0.3} />
       </Text>
     </Float>
   )
 }
 
-// Partículas de energia
 function EnergyParticles() {
   const particlesRef = useRef<THREE.Points>(null)
 
@@ -123,26 +133,21 @@ function EnergyParticles() {
   )
 }
 
-// Cena 3D principal
 function Scene3D() {
   return (
     <>
-      {/* Iluminação dramática */}
       <ambientLight intensity={0.3} />
       <pointLight position={[10, 10, 10]} intensity={2} color="#00d4ff" />
       <pointLight position={[-10, -10, -10]} intensity={1.5} color="#ff00ff" />
       <pointLight position={[0, 0, 10]} intensity={1} color="#00ff88" />
       <spotLight position={[0, 10, 0]} angle={0.3} penumbra={1} intensity={2} color="#ffffff" castShadow />
 
-      {/* Esfera central */}
       <CentralSphere />
 
-      {/* Anéis de energia */}
       <EnergyRing radius={3} color="#00d4ff" />
       <EnergyRing radius={4} color="#ff00ff" />
       <EnergyRing radius={5} color="#00ff88" />
 
-      {/* Geometrias flutuantes */}
       <FloatingGeometry
         position={[-4, 2, -3]}
         geometry={<boxGeometry args={[0.8, 0.8, 0.8]} />}
@@ -171,16 +176,11 @@ function Scene3D() {
         speed={0.9}
       />
 
-      {/* Texto 3D */}
       <FloatingText />
-
-      {/* Partículas de energia */}
       <EnergyParticles />
 
-      {/* Sparkles para efeito extra */}
       <Sparkles count={100} scale={[20, 20, 20]} size={3} speed={0.4} color="#00d4ff" />
 
-      {/* Controles suaves */}
       <OrbitControls
         enableZoom={false}
         enablePan={false}
@@ -196,8 +196,6 @@ function Scene3D() {
 export default function Hero() {
   return (
     <section className="relative h-screen flex items-center justify-center overflow-hidden">
-
-      {/* 3D Scene Futurística */}
       <div className="absolute inset-0 z-10">
         <Canvas camera={{ position: [0, 0, 8], fov: 75 }} gl={{ antialias: true, alpha: true }} shadows>
           <Suspense fallback={null}>
@@ -206,7 +204,6 @@ export default function Hero() {
         </Canvas>
       </div>
 
-      {/* Content */}
       <div className="relative z-20 text-center px-6">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
@@ -227,7 +224,6 @@ export default function Hero() {
             />
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/20 to-purple-500/20 animate-pulse"></div>
 
-            {/* Anel de energia ao redor da foto */}
             <motion.div
               className="absolute inset-0 rounded-full border-2 border-cyan-400"
               animate={{ rotate: 360 }}
@@ -328,7 +324,6 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Scroll Indicator Melhorado */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -346,7 +341,6 @@ export default function Hero() {
             className="w-1 h-3 bg-cyan-400 rounded-full mt-2"
           />
 
-          {/* Efeito de brilho */}
           <motion.div
             className="absolute inset-0 border-2 border-purple-400 rounded-full"
             animate={{
@@ -358,7 +352,6 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Efeitos de partículas CSS */}
       <div className="absolute inset-0 pointer-events-none z-10">
         {Array.from({ length: 50 }, (_, i) => (
           <motion.div
