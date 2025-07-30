@@ -8,12 +8,10 @@ import Experience from "@/components/Experience"
 import Contact from "@/components/Contact"
 import Navigation from "@/components/Navigation"
 import LoadingScreen from "@/components/LoadingScreen"
-import InteractiveBackground from "@/components/InteractiveBackground"
 
 export default function Home() {
   return (
     <main className="bg-gray-900 text-white overflow-x-hidden relative">
-      <InteractiveBackground />
       <div className="relative z-10">
         <LoadingScreen />
         <Navigation />

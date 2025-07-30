@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Canvas, useFrame } from "@react-three/fiber"
-import { OrbitControls, Box, Sphere, Environment } from "@react-three/drei"
+import { OrbitControls, Box, Sphere } from "@react-three/drei"
 import { EffectComposer, Bloom, ChromaticAberration } from "@react-three/postprocessing"
 import * as THREE from "three"
 
@@ -28,7 +28,6 @@ function FloatingCube({ position, color }: { position: [number, number, number];
 function Scene3D() {
   return (
     <>
-      <Environment preset="night" />
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} intensity={1} color="#00d4ff" />
       <pointLight position={[-10, -10, -10]} intensity={1} color="#ff00ff" />

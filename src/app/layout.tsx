@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://seu-dominio.com",
+    url: "https://www.kaiqueportfolio.netlify.app",
     title: "Kaique Marlon | Desenvolvedor Full Stack",
     description:
       "Portfolio de Kaique Marlon - Desenvolvedor Full Stack especializado em React, Next.js, TypeScript e soluções web modernas.",

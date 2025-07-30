@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { ExternalLink, Github, Monitor, Smartphone, Star, Calendar } from "lucide-react"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const projects = [
   {
@@ -65,8 +65,7 @@ const projects = [
   {
     id: 5,
     title: "E-commerce de Acessórios",
-    description:
-      "Aplicação responsiva feita para gerar mais vendas online e mostrar o estoque atualizado da loja",
+    description: "Aplicação responsiva feita para gerar mais vendas online e mostrar o estoque atualizado da loja",
     desktopImage: "/images/site evilly.png",
     mobileImage: "/images/site evilly mobile.png",
     technologies: ["React", "Storage", "Firebase", "Tailwind"],
@@ -147,33 +146,69 @@ function DeviceMockup({
   )
 }
 
-// Background animado
+// Background animado sem Math.random()
 function AnimatedBackground() {
+  const [mounted, setMounted] = useState(false)
+  const [circles, setCircles] = useState<
+    Array<{
+      width: number
+      height: number
+      left: string
+      top: string
+      duration: number
+      delay: number
+    }>
+  >([])
+
+  useEffect(() => {
+    setMounted(true)
+    // Gerar círculos com valores determinísticos
+    const generatedCircles = Array.from({ length: 6 }, (_, i) => ({
+      width: (i + 1) * 50 + 100,
+      height: (i + 1) * 50 + 100,
+      left: `${(i * 15) % 100}%`,
+      top: `${(i * 20) % 100}%`,
+      duration: (i + 1) * 2 + 8,
+      delay: i * 0.5,
+    }))
+    setCircles(generatedCircles)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-cyan-900/20 animate-pulse"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.1)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse"></div>
+      </div>
+    )
+  }
+
   return (
     <div className="absolute inset-0 overflow-hidden">
       {/* Gradiente animado */}
       <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-blue-900/20 to-cyan-900/20 animate-pulse"></div>
 
       {/* Círculos flutuantes */}
-      {Array.from({ length: 6 }).map((_, i) => (
+      {circles.map((circle, i) => (
         <motion.div
           key={i}
           className="absolute rounded-full bg-gradient-to-r from-cyan-400/10 to-purple-500/10 blur-xl"
           style={{
-            width: Math.random() * 300 + 100,
-            height: Math.random() * 300 + 100,
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
+            width: circle.width,
+            height: circle.height,
+            left: circle.left,
+            top: circle.top,
           }}
           animate={{
-            x: [0, Math.random() * 100 - 50],
-            y: [0, Math.random() * 100 - 50],
+            x: [0, 50, -50, 0],
+            y: [0, -50, 50, 0],
             scale: [1, 1.2, 1],
           }}
           transition={{
-            duration: Math.random() * 10 + 10,
+            duration: circle.duration,
             repeat: Number.POSITIVE_INFINITY,
             repeatType: "reverse",
+            delay: circle.delay,
           }}
         />
       ))}
